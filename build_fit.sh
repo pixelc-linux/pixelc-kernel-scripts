@@ -14,7 +14,6 @@ fi
 
 if [ ! -x "$(command -v mkimage)" ]; then
     echo "mkimage not found (install u-boot-tools), exitting..."
-    help
     exit 1
 fi
 

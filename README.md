@@ -13,11 +13,16 @@ cd pixelc-kernel-scripts
 ./build.sh ../linux
 ./build_fit.sh
 cd ../pixelc-mkinitrd.sh
-./mkinitrd.sh
-cd ..
-cp pixelc-kernel-scripts/output/Image.fit .
-cp pixelc-mkinitrd.sh/initrd.img .
+./mkinitrd.sh -o ../pixelc-kernel-scripts/initrd.img
+cd ../pixelc-kernel-scripts
+cp output/Image.fit .
+# if you want to just boot
 fastboot boot Image.fit initrd.img
+# if you want to flash
+./build_image.sh Image.fit initrd.img
+./build_signed.sh
+fastboot flash boot boot.img
+fastboot boot boot.img
 ```
 
 ## Long version
@@ -103,4 +108,52 @@ you need to sign it using Chrome OS keys and the `futility` tool.
 
 ### Signing
 
-TBD.
+#### Generating a complete unsigned image
+
+First, you will need to create a single unsigned boot image using your
+kernel and ramdisk. For that, you will use the `build_image.sh` script.
+
+```
+./build_image.sh output/Image.fit path/to/initrd.img
+```
+
+This script uses the Android `mkbootimg` tool. If it's not present in `PATH`,
+you can point the script to it using the `MKBOOTIMG` environment variable.
+
+This creates a `boot.img.unsigned` file. If you don't like that name for some
+reason, you can pass your own name using the third parameter to the script.
+
+#### Signing the image
+
+The final script here is `build_signed.sh`. It requires the `futility` tool
+as well as ChromeOS developer keys. You can typically find both in a package
+named `vboot-kernel-utils` or so.
+
+If you don't have `futility` in `PATH`, you can point the script to it using
+the `FUTILITY` environment variable. Also, if `/usr/share/vboot` is not the
+default path to the keys, you can specify `VBOOT_PATH` as well. This path
+is checked for the presence of `devkeys/kernel_data_key.{vpubk,vprivk}`.
+
+If you satisfy both conditions, run the script:
+
+```
+./build_signed.sh
+```
+
+This assumes there is a `boot.img.unsigned`. If you changed the filename,
+pass it as the first argument to the script. It will emit a `boot.img` by
+default; you can change that by passing your desired filename as the second
+argument to the script.
+
+### Flashing
+
+Once you have a signed image, you can flash it onto your Pixel C. You do
+that normally using `fastboot`:
+
+```
+fastboot flash boot boot.img
+fastboot boot boot.img
+```
+
+The device should boot, assuming your kernel, ramdisk and root filesystem
+are correctly set up.
