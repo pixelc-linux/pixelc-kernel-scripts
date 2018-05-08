@@ -7,11 +7,17 @@ This is a set of scripts to generate a working kernel for the Pixel C.
 ```
 git clone https://github.com/q66/linux.git
 git clone https://github.com/pixelc-linux/pixelc-kernel-scripts.git
+git clone https://github.com/pixelc-linux/pixelc-mkinitrd.sh.git
 cd pixelc-kernel-scripts
 ./defconfig.sh ../linux
 ./build.sh ../linux
 ./build_fit.sh
-ls output
+cd ../pixelc-mkinitrd.sh
+./mkinitrd.sh
+cd ..
+cp pixelc-kernel-scripts/output/Image.fit .
+cp pixelc-mkinitrd.sh/initrd.img .
+fastboot boot Image.fit initrd.img
 ```
 
 ## Long version
