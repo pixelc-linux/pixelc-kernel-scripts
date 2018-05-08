@@ -58,6 +58,7 @@ fi
 if [ -n "$KERN_BUILD_IN_TREE" ]; then
     KERN_BDIR="$1"
 else
+    rm -rf "$KERN_BUILDDIR"
     mkdir -p "$KERN_BUILDDIR"
     KERN_BDIR="$PWD/$KERN_BUILDDIR"
 fi
