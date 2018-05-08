@@ -11,7 +11,7 @@ git clone https://github.com/pixelc-linux/pixelc-mkinitrd.sh.git
 cd pixelc-kernel-scripts
 ./defconfig.sh ../linux
 ./build.sh ../linux
-./build_fit.sh
+./make_zimage.sh
 cd ../pixelc-mkinitrd.sh
 ./mkinitrd.sh -o ../pixelc-kernel-scripts/initrd.img
 cd ../pixelc-kernel-scripts
@@ -19,8 +19,8 @@ cp output/Image.fit .
 # if you want to just boot
 fastboot boot Image.fit initrd.img
 # if you want to flash
-./build_image.sh Image.fit initrd.img
-./build_signed.sh
+./make_image.sh Image.fit initrd.img
+./sign_image.sh
 fastboot flash boot boot.img
 fastboot boot boot.img
 ```
@@ -76,10 +76,10 @@ well as device tree blobs.
 
 After the kernel is built, this is not enough to boot it. You need to bundle
 the kernel and a corresponding Flattened Device Tree blob into a U-boot .fit
-image. For this, you use the `build_fit.sh` script:
+image. For this, you use the `make_zimage.sh` script:
 
 ```
-./build_fit.sh
+./make_zimage.sh
 ```
 
 By default, it will attempt to take the files from `build`, as is default
@@ -111,10 +111,10 @@ you need to sign it using Chrome OS keys and the `futility` tool.
 #### Generating a complete unsigned image
 
 First, you will need to create a single unsigned boot image using your
-kernel and ramdisk. For that, you will use the `build_image.sh` script.
+kernel and ramdisk. For that, you will use the `make_image.sh` script.
 
 ```
-./build_image.sh output/Image.fit path/to/initrd.img
+./make_image.sh output/Image.fit path/to/initrd.img
 ```
 
 This script uses the Android `mkbootimg` tool. If it's not present in `PATH`,
@@ -125,7 +125,7 @@ reason, you can pass your own name using the third parameter to the script.
 
 #### Signing the image
 
-The final script here is `build_signed.sh`. It requires the `futility` tool
+The final script here is `sign_image.sh`. It requires the `futility` tool
 as well as ChromeOS developer keys. You can typically find both in a package
 named `vboot-kernel-utils` or so.
 
@@ -137,7 +137,7 @@ is checked for the presence of `devkeys/kernel_data_key.{vpubk,vprivk}`.
 If you satisfy both conditions, run the script:
 
 ```
-./build_signed.sh
+./sign_image.sh
 ```
 
 This assumes there is a `boot.img.unsigned`. If you changed the filename,
