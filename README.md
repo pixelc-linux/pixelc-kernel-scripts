@@ -5,7 +5,7 @@ This is a set of scripts to generate a working kernel for the Pixel C.
 ## TL;DR
 
 ```
-git clone https://github.com/q66/linux.git
+git clone https://github.com/pixelc-linux/linux.git
 git clone https://github.com/pixelc-linux/pixelc-kernel-scripts.git
 git clone https://github.com/pixelc-linux/pixelc-mkinitrd.sh.git
 cd pixelc-kernel-scripts
