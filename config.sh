@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # cross-compiler and configuration
-source ./env.sh
+. env.sh
 
 cd "$KERNPATH"
 
@@ -17,3 +17,5 @@ fi
 
 make ARCH=arm64 CROSS_COMPILE="$KERN_CROSS" \
     KBUILD_DEFCONFIG="$KERN_DEFCONFIG" "$CONFIGTOOL" O="$KERN_BDIR" "$@"
+
+rm -rf "$TMP_PREFIX_ABS"
