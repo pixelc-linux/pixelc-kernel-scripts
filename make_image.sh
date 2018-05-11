@@ -10,7 +10,7 @@ if [ ! -x "$(command -v $MKBOOTIMG)" ]; then
 fi
 
 if [ -z "$1" ] || [ -z "$2" ]; then
-    echo "Usage: $0 Image.fit initrd.img"
+    echo "Usage: $0 Image.fit initramfs.cpio.lz4"
     exit 1
 fi
 

@@ -7,19 +7,19 @@ This is a set of scripts to generate a working kernel for the Pixel C.
 ```
 git clone https://github.com/pixelc-linux/linux.git
 git clone https://github.com/pixelc-linux/pixelc-kernel-scripts.git
-git clone https://github.com/pixelc-linux/pixelc-mkinitrd.sh.git
+git clone https://github.com/pixelc-linux/pixelc-mkinitramfs.sh.git
 cd pixelc-kernel-scripts
 ./defconfig.sh ../linux
 ./build.sh ../linux
 ./make_zimage.sh
-cd ../pixelc-mkinitrd.sh
-./mkinitrd.sh -o ../pixelc-kernel-scripts/initrd.img
+cd ../pixelc-mkinitramfs.sh
+./mkinitramfs.sh -o ../pixelc-kernel-scripts/initramfs.cpio.lz4
 cd ../pixelc-kernel-scripts
 cp output/Image.fit .
 # if you want to just boot
-fastboot boot Image.fit initrd.img
+fastboot boot Image.fit initramfs.cpio.lz4
 # if you want to flash
-./make_image.sh Image.fit initrd.img
+./make_image.sh Image.fit initramfs.cpio.lz4
 ./sign_image.sh
 fastboot flash boot boot.img
 fastboot boot boot.img
@@ -94,12 +94,12 @@ as the second argument to the script.
 Now you only need a ramdisk. You can create one or obtain a pre-built one
 from another repository:
 
-https://github.com/pixelc-linux/pixelc-mkinitrd.sh
+https://github.com/pixelc-linux/pixelc-mkinitramfs.sh
 
 You can then boot the kernel + the ramdisk using `fastboot`:
 
 ```
-fastboot boot Image.fit initrd.img
+fastboot boot Image.fit initramfs.cpio.lz4
 ```
 
 Once you have verified it successfully boots, you might want to flash it
@@ -114,7 +114,7 @@ First, you will need to create a single unsigned boot image using your
 kernel and ramdisk. For that, you will use the `make_image.sh` script.
 
 ```
-./make_image.sh output/Image.fit path/to/initrd.img
+./make_image.sh output/Image.fit path/to/initramfs.cpio.lz4
 ```
 
 This script uses the Android `mkbootimg` tool. If it's not present in `PATH`,
