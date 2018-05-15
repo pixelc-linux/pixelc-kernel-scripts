@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # cross-compiler and configuration
-. env.sh
+. ./env.sh
 
 cd "$KERNPATH"
 

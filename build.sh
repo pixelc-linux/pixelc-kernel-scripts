@@ -2,7 +2,7 @@
 
 # cross-compiler and configuration
 export KERN_NOCONFIG=1
-. env.sh
+. ./env.sh
 
 cd "$KERNPATH"
 
