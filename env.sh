@@ -75,6 +75,7 @@ export PATH="${TMP_PREFIX_ABS}:${PATH}"
 # need to deal with sed
 if [ -n "$SED" ] && [ "$SED" != "sed" ]; then
     # user overridden sed
+    SED="$SED"
 elif [ -z "$(sed --version 2>&1 | head -n1 | grep '(GNU sed)')" ]; then
     # non-GNU default sed, try gsed
     SED=gsed
@@ -86,6 +87,7 @@ fi
 # same with make
 if [ -n "$MAKE" ] && [ "$MAKE" != "make" ]; then
     # user overridden make
+    MAKE="$MAKE"
 elif [ -z "$(make --version 2>&1 | head -n1 | grep 'GNU Make')" ]; then
     MAKE=gmake
 else
