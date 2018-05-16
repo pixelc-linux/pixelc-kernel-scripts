@@ -44,7 +44,7 @@ cp "${KERN_BDIR}/arch/arm64/boot/dts/${KERN_DTB}" "$OUTDIR"
 
 cd "$OUTDIR"
 echo "Compressing image..."
-lz4c ./Image Image.lz4
+lz4c -9 ./Image Image.lz4
 if [ $? -ne 0 ]; then
     echo "Image compression failed, exitting..."
     cd ..
