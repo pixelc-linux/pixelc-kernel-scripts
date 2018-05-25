@@ -13,13 +13,13 @@ cd pixelc-kernel-scripts
 ./build.sh ../linux
 ./make_zimage.sh
 cd ../pixelc-mkinitramfs.sh
-./mkinitramfs.sh -o ../pixelc-kernel-scripts/initramfs.cpio.lz4
+./mkinitramfs.sh -o ../pixelc-kernel-scripts/initramfs.cpio
 cd ../pixelc-kernel-scripts
 cp output/Image.fit .
 # if you want to just boot
-fastboot boot Image.fit initramfs.cpio.lz4
+fastboot boot Image.fit initramfs.cpio.gz
 # if you want to flash
-./make_image.sh Image.fit initramfs.cpio.lz4
+./make_image.sh Image.fit initramfs.cpio.gz
 ./sign_image.sh
 fastboot flash boot boot.img
 fastboot boot boot.img
@@ -99,7 +99,7 @@ https://github.com/pixelc-linux/pixelc-mkinitramfs.sh
 You can then boot the kernel + the ramdisk using `fastboot`:
 
 ```
-fastboot boot Image.fit initramfs.cpio.lz4
+fastboot boot Image.fit initramfs.cpio.gz
 ```
 
 Once you have verified it successfully boots, you might want to flash it
@@ -114,7 +114,7 @@ First, you will need to create a single unsigned boot image using your
 kernel and ramdisk. For that, you will use the `make_image.sh` script.
 
 ```
-./make_image.sh output/Image.fit path/to/initramfs.cpio.lz4
+./make_image.sh output/Image.fit path/to/initramfs.cpio.gz
 ```
 
 This script uses the Android `mkbootimg` tool. If it's not present in `PATH`,
